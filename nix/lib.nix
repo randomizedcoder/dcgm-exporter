@@ -21,10 +21,9 @@ let
   buildGoModule = pkgs.buildGo126Module or (pkgs.buildGoModule.override { go = goPackage; });
 
   # Single source of truth for the vendored Go module hash.
-  # Update after any go.mod / go.sum change: run `nix build .#default`,
-  # copy the printed `got:` hash here. lib.fakeHash on first run forces
-  # the build to print the real hash.
-  vendorHash = lib.fakeHash;
+  # Update after any go.mod / go.sum change: set to `lib.fakeHash`,
+  # run `nix build .#default`, copy the printed `got:` hash here.
+  vendorHash = "sha256-2pH1bbVgHUpJU8OmkN/8efQPTDv7pYQyfEQNAQgMJoQ=";
 
   # Versions sourced from hack/VERSION (Makefile reads the same file).
   # When hack/VERSION is bumped, update these two lines. Keeping them
