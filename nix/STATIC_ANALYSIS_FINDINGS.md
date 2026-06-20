@@ -36,8 +36,22 @@ Each finding triaged for action in this report landed as a single focused PR aga
 | staticcheck **QF1003** (tagged switch) | `internal/pkg/deviceinfo/device_info.go:186` | [#689](https://github.com/NVIDIA/dcgm-exporter/pull/689) |
 | go vet **composites** (unkeyed `WatchedEntityKey` literals) | `internal/pkg/devicemonitoring/device_monitoring_test.go` | [#688](https://github.com/NVIDIA/dcgm-exporter/pull/688) |
 | golangci-lint **contextcheck** (server `render`) | `internal/pkg/server/server.go:261` | [#687](https://github.com/NVIDIA/dcgm-exporter/pull/687) |
+| **Context architecture refactor** (signal-cancellable root ctx + docs/CONTEXTS.md + tests/signals/ black-box test) | `cmd/dcgm-exporter/main.go`, `pkg/cmd/app.go` | [#695](https://github.com/NVIDIA/dcgm-exporter/pull/695) |
+| **typos** (real fixes) + `_typos.toml` (silence DBE / Hashicorp / go.mod pseudo-version FPs) | `internal/pkg/{prerequisites,testutils,collector,integration_test}/*_test.go`, new `_typos.toml` | [#696](https://github.com/NVIDIA/dcgm-exporter/pull/696) |
 
-Findings the maintainer triaged but deferred to a second pass (`exhaustive` switches, `errorlint` `%s → %w`, `nilerr` in helm test framework, `nilnil`, `bodyclose`, the unused `docker-credential-helpers` dep, markdownlint / typos / cspell config setup) are listed in the "Recommended next steps" section at the bottom of this document.
+### Fork-only (not sent upstream)
+
+| Finding | PR |
+| --- | --- |
+| golangci-lint **nilerr** in helm test framework — reviewed and confirmed as a deliberate fallback (false positive). Annotated with `//nolint:nilerr` plus a warning log when the fallback fires. | [randomizedcoder/dcgm-exporter#16](https://github.com/randomizedcoder/dcgm-exporter/pull/16) |
+
+Findings the maintainer triaged but deferred to a second pass (`exhaustive` switches, `errorlint` `%s → %w`, `nilnil`, `bodyclose`, the unused `docker-credential-helpers` dep, markdownlint / cspell config setup, four `os.Setenv` G104 in `dcgmprovider`, G706 log injection in `main.go`) are listed in the "Recommended next steps" section at the bottom of this document.
+
+## Status as of 2026-06-20
+
+16 PRs out (14 mechanical security fixes #681–#694 + the context refactor #695 + the typos cleanup #696). All open against `NVIDIA/dcgm-exporter:main`; awaiting maintainer review. Plus 1 documentation-only PR parked on the fork (#16) for the helm `nilerr` false-positive analysis.
+
+No further PRs from this branch until reviewer feedback arrives.
 
 ## How to reproduce
 
