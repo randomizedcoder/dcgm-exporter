@@ -311,9 +311,13 @@ func (c *HelmClient) GetReleaseValues(releaseName string) error {
 	// Convert values to JSON for better readability
 	jsonData, err := json.MarshalIndent(values, "", "  ")
 	if err != nil {
-		// Fallback to printing as string if JSON conversion fails
+		// Marshalling failure is non-fatal — the values are still printed
+		// in raw form. Log the cause so the fallback is visible in test
+		// output; the caller treats this function's error as a warning
+		// (see GetReleaseValues caller in this package).
+		fmt.Fprintln(ginkgo.GinkgoWriter, "Warning: JSON conversion failed; printing raw values. err:", err)
 		fmt.Fprintln(ginkgo.GinkgoWriter, "Values (raw):", values)
-		return nil
+		return nil //nolint:nilerr // intentional fallback; see comment above
 	}
 
 	fmt.Fprintln(ginkgo.GinkgoWriter, string(jsonData))
