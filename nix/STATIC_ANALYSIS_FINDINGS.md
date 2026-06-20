@@ -16,6 +16,29 @@
 
 Security findings are listed exhaustively below. Correctness findings are listed exhaustively. Quality / style findings are summarized per-rule with representative samples (full output reproducible via the commands in "How to reproduce").
 
+## PRs opened upstream
+
+Each finding triaged for action in this report landed as a single focused PR against `NVIDIA/dcgm-exporter:main`:
+
+| Rule | Site | PR |
+| --- | --- | --- |
+| gosec **G115** (NVLink state cast) | `internal/pkg/collector/p2p_status_collector.go:85` | [#681](https://github.com/NVIDIA/dcgm-exporter/pull/681) |
+| gosec **G204** + golangci-lint **noctx** (exec wrapper, NixOS) | `internal/pkg/exec/exec.go`, `internal/pkg/prerequisites/dcgmlib_rule.go` | [#684](https://github.com/NVIDIA/dcgm-exporter/pull/684) |
+| gosec **G301** (debug dir mode) | `internal/pkg/debug/debug.go:70` | [#682](https://github.com/NVIDIA/dcgm-exporter/pull/682) |
+| hadolint **DL4006** (SHELL pipefail) | `docker/Dockerfile`, `.devcontainer/Dockerfile` | [#683](https://github.com/NVIDIA/dcgm-exporter/pull/683) |
+| hadolint **DL3045** (COPY relative dest) | `docker/Dockerfile:334` | [#685](https://github.com/NVIDIA/dcgm-exporter/pull/685) |
+| hadolint **DL3046** (useradd `-l`) | `.devcontainer/Dockerfile:8` | [#686](https://github.com/NVIDIA/dcgm-exporter/pull/686) |
+| hadolint **DL4001** + **DL3047** (curl-only) | `.devcontainer/Dockerfile` | [#694](https://github.com/NVIDIA/dcgm-exporter/pull/694) |
+| staticcheck **U1000** (unused field) | `internal/pkg/dcgmprovider/dcgm.go:55` | [#693](https://github.com/NVIDIA/dcgm-exporter/pull/693) |
+| staticcheck **S1001** (copy() builtin) | `internal/pkg/deviceinfo/device_info.go:601` | [#692](https://github.com/NVIDIA/dcgm-exporter/pull/692) |
+| staticcheck **ST1001** (dot import) | `internal/pkg/devicewatcher/device_watcher.go:31` | [#691](https://github.com/NVIDIA/dcgm-exporter/pull/691) |
+| staticcheck **ST1005** ×2 + **QF1012** (error strings + Fprintf) | `internal/pkg/prerequisites/variables.go:41`, `pkg/cmd/app.go:1005`, `internal/pkg/collector/types.go:164` | [#690](https://github.com/NVIDIA/dcgm-exporter/pull/690) |
+| staticcheck **QF1003** (tagged switch) | `internal/pkg/deviceinfo/device_info.go:186` | [#689](https://github.com/NVIDIA/dcgm-exporter/pull/689) |
+| go vet **composites** (unkeyed `WatchedEntityKey` literals) | `internal/pkg/devicemonitoring/device_monitoring_test.go` | [#688](https://github.com/NVIDIA/dcgm-exporter/pull/688) |
+| golangci-lint **contextcheck** (server `render`) | `internal/pkg/server/server.go:261` | [#687](https://github.com/NVIDIA/dcgm-exporter/pull/687) |
+
+Findings the maintainer triaged but deferred to a second pass (`exhaustive` switches, `errorlint` `%s → %w`, `nilerr` in helm test framework, `nilnil`, `bodyclose`, the unused `docker-credential-helpers` dep, markdownlint / typos / cspell config setup) are listed in the "Recommended next steps" section at the bottom of this document.
+
 ## How to reproduce
 
 From the repo root:
